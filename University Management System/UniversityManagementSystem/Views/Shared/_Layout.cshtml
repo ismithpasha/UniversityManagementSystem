@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title>@ViewBag.Title - UMS</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="wrapper container-fluid col-md-12">
+        <div class="navbar navbar-default navbar-fixed-top col-xs-push-5 ">
+            <div class="container">
+                <div class="navbar-header ">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <nav class="nav nav-bar  ">
+                        <ul>
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>
+                                <a href="#">Department</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Department Entry", "Create", "Department")</li>
+                                    <li>@Html.ActionLink("All Departments", "Index", "Department")</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Cources</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Save Course", "Create", "Course")</li>
+                                    <li>@Html.ActionLink("Courses Statistics", "ViewCourseStatus", "AssignCourse")</li>
+                                    <li>@Html.ActionLink("Unassign Courses", "UnassignCourses", "Course")</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Teachers</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Save Teacher", "Create", "Teacher")</li>
+                                    <li>@Html.ActionLink("Assign Course to Teacher", "Save", "AssignCourse")</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Students</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Register New Student", "Create", "Student")</li>
+                                    <li>@Html.ActionLink("Enroll In Course", "Create", "EnrollCourse")</li>
+                                    <li>@Html.ActionLink("Save Result", "SaveResult", "EnrollCourse")</li>
+                                    <li>@Html.ActionLink("View Result", "ViewResult", "EnrollCourse")</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">Schedules</a>
+                                <ul>
+                                    <li>@Html.ActionLink("Allocate Classroms", "Create", "RoomAllocation")</li>
+                                    <li>@Html.ActionLink("View Class Schedule", "Index", "RoomAllocation")</li>
+                                    <li>@Html.ActionLink("Unallocate Classrooms", "UnallocateRoom", "RoomAllocation")</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content margin-top-150 margin-bottom-50 col-md-12">
+            <h2 class="h2 text-center heading_box_shadow animated rollIn"></h2>
+            <div class="animated fadeIn">
+                @RenderBody()
+            </div>    
+        </div>
+    </div>
+    <footer class="footer col-md-2">
+        <div class="container">
+            <p class="text-muted col-md-12"> <span style="color: lime;"></span></p>
+            <p>&copy; @DateTime.Now.Year - Team Fantastic Four</p>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+</body>
+</html>

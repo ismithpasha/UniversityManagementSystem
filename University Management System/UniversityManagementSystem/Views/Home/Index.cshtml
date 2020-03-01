@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <h1 class="text-center" >University Management system</h1>
+   
+</div>
+
+<div class="row">
+    <div class="col-md-1">
+
+        </div>
+
+        <div class="col-md-4">
+
+            <p><a class="btn btn-primary btn-lg btn-block" @Html.ActionLink("Department Entry", "Create", "Department") </a></p>
+            <p><a class="btn btn-info btn-lg btn-block" @Html.ActionLink("View All Departments", "Index", "Department") </a></p>
+           
+             <p><a class="btn btn-primary btn-lg btn-block" @Html.ActionLink("Save Course", "Create", "Course") </a></p>
+            <p><a class="btn btn-info btn-lg btn-block" @Html.ActionLink("Courses Statistics", "ViewCourseStatus", "AssignCourse") </a></p>
+            <p><a class="btn btn-primary btn-lg btn-block" @Html.ActionLink("Unassign Courses", "UnassignCourses", "Course") </a></p>
+           
+            <p><a class="btn btn-info btn-lg btn-block" @Html.ActionLink("Save Teacher", "Create", "Teacher") </a></p>
+            <p><a class="btn btn-primary btn-lg btn-block" @Html.ActionLink("Assign Course to Teacher", "Save", "AssignCourse")</a></p>
+
+         </div>
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-4">
+       
+        <p><a class="btn btn-primary btn-lg btn-block" @Html.ActionLink("Register New Student", "Create", "Student")</a></p>
+        <p><a class="btn btn-info btn-lg btn-block" @Html.ActionLink("Enroll In Course", "Create", "EnrollCourse") </a></p>
+        <p><a class="btn btn-primary btn-lg btn-block" @Html.ActionLink("Save Result", "SaveResult", "EnrollCourse") </a></p>
+        <p><a class="btn btn-info btn-lg btn-block" @Html.ActionLink("View Result", "ViewResult", "EnrollCourse") </a></p>
+        <p><a class="btn btn-primary btn-lg btn-block"  @Html.ActionLink("Allocate Classroms", "Create", "RoomAllocation") </a></p>
+
+        <p><a class="btn btn-info btn-lg btn-block" @Html.ActionLink("View Class Schedule", "Index", "RoomAllocation") </a></p>
+        <p><a class="btn btn-primary btn-lg btn-block" @Html.ActionLink("Unallocate Classrooms", "UnallocateRoom", "RoomAllocation") </a></p>
+      </div>
+
+    <div class="col-md-1">
+        
+     </div>
+
+    <br/>
+</div>
+<br /><br /><br />

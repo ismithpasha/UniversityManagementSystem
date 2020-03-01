@@ -1,0 +1,205 @@
+﻿@model UnversityManagementSystem.Models.EnrollCourse
+
+@{
+    ViewBag.Title = "ViewResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewResult</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" >
+        <h4>EnrollCourse</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RegistrationId, "Reg No.", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.RegistrationId)*@
+                <select name="RegistrationId" id="RegistrationId">
+                    <option value=""></option>
+                    @foreach (var student in ViewBag.StudentList)
+                    {
+                        <option value="@student.RegistrationId">@student.RegistrationId</option>
+                    }
+
+                </select>
+                @Html.ValidationMessageFor(model => model.RegistrationId)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Name", new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.TakenCredit, new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                <input type="text" name="name" id="name" readonly="" />
+               
+                
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Email", new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.TakenCredit, new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                <input type="text" name="email" id="email" readonly="" />
+                
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.Label("Department", new { @class = "control-label col-md-2" })
+            @*@Html.LabelFor(model => model.TakenCredit, new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                <input type="text" name="department" id="department" readonly="" />
+            </div>
+        </div>
+        
+    </div>
+     
+    <div id="UpdatePanel">
+ 
+    </div>
+
+    <div id="PDFData" >
+
+        <div class="form-horizontal" >
+            <div class="headingSection" style="text-align: center">
+            </div>
+            <br />
+            <br />
+            <br />
+            <div class="form-group">
+                @Html.Label("Name :", new { @class = "control-label col-md-2" })
+
+                <label id="studentName" class="control-label col-md-2"></label>
+
+            </div>
+            <div class="form-group">
+                @Html.Label("Registration No :", new { @class = "control-label col-md-2" })
+
+                <label id="studentRegNo" class="control-label col-md-2"></label>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Email :", new { @class = "control-label col-md-2" })
+
+                <label id="studentEmail" class="control-label col-md-2"></label>
+
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Department :", new { @class = "control-label col-md-2" })
+
+                <label id="studentDepartment" class="control-label col-md-2"></label>
+            </div>
+            <div class="form-group">
+                @Html.Label("Date :", new { @class = "control-label col-md-2" })
+
+                <label id="curDate" class="control-label col-md-2"></label>
+            </div>
+            <br />
+            <br />
+            
+        </div>
+    </div>
+
+
+}
+
+
+<script src="~/Scripts/jquery-2.1.4.js"></script>
+<script src="~/Scripts/jquery-printme.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#PDFData").hide();
+        $("#Submit").click(function () {
+            $("#PDFData").printMe({ "path": "" });
+        });
+
+        $("#ResultTable").hide();
+        $("#RegistrationId").change(function() {
+            var regNo = $("#RegistrationId").val();
+            var jsnFormatData = { regNo: regNo };
+            
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStudentById","EnrollCourse")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(jsnFormatData),
+                dataType:"json",
+                success: function (data) {
+                    $.each(data, function (key, value) {
+
+                        $("#name").val(value.StudentName);
+                        $("#email").val(value.Email);
+                        $("#department").val(value.d.DeptCode);
+                        
+                        var jsnData = { regNo: regNo };
+                        //alert(deptCode);
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("GetCoursesbyRegNo","EnrollCourse")',
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(jsnData),
+                            dataType: "json",
+                            success: function (dataa) {
+                                var table = $('<table id="ResultTable" class="table">');
+                                var tablePdf = $('<table id="ResultTablePdf" class="tablePdf"> style="border:2px solid #cccccc"');
+                                var thead = $('<thead></thead>');
+                                var theadPdf = $('<thead></thead>');
+                                thead.append('<th>Course Code</th>');
+                                theadPdf.append('<th>Course Code</th>');
+                                thead.append('<th>Name</th>');
+                                theadPdf.append('<th>Name</th>');
+                                thead.append('<th>Grade</th>');
+                                theadPdf.append('<th>Grade</th>');
+                                thead.css('background-color', '#808080');
+                                table.append(thead);
+                                tablePdf.append(theadPdf);
+                                
+                                $.each(dataa, function (key2, value2) {
+                                    var trow = $('<tr></tr>');
+                                    var trowPdf = $('<tr></tr>');
+                                    var gread = value2.GradeName;
+                                    if (gread == null) gread = 'Not Graded Yet';
+                                    trow.append('<td>' + value2.Course.CourseCode + '</td>');
+                                    trowPdf.append('<td>' + value2.Course.CourseCode + '</td>');
+                                    trow.append('<td>' + value2.Course.CourseName + '</td>');
+                                    trowPdf.append('<td>' + value2.Course.CourseName + '</td>');
+                                    trow.append('<td>' + gread + '</td>');
+                                    trowPdf.append('<td>' + gread + '</td>');
+                                    table.append(trow);
+                                    tablePdf.append(trowPdf);
+                                    // $("#CourseTable thead").after('<tr><td>' + value2.Course.CourseCode + '</td><td>' + value2.Course.CourseName + '</td><td>' + value2.GradeName + '</td></tr>');
+                                });
+                                $("tr:odd", table).css('background-color', '#ceaee8');
+                                $("tr:odd", tablePdf).css('background-color', '#ffffff');
+                                $("tr:even", table).css('background-color', '#808080');
+                                $("tr:even", tablePdf).css('background-color', '#ffffff');
+                                $("#UpdatePanel").html(table);
+                                $("#UpdatePanelPdf").html(tablePdf);
+                                document.getElementById("studentName").innerHTML = value.StudentName;
+                                document.getElementById("studentRegNo").innerHTML = regNo;
+                                document.getElementById("studentEmail").innerHTML = value.Email;
+                                document.getElementById("studentDepartment").innerHTML = value.d.DeptCode;
+                                var currentDate = new Date();
+                                document.getElementById("curDate").innerHTML = currentDate.getDate()+"/"+(currentDate.getMonth()+1)+"/"+currentDate.getFullYear();
+                               
+                            },
+                        });
+                    });
+                },
+            });
+
+            return false;
+        });
+    });
+    
+</script>
